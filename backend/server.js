@@ -1,12 +1,13 @@
 const express=require("express");
 const server=express();
+const path = require('path');
 const mongoose=require("mongoose")
  const router=require("./Router/router")
+ const Emprouter=require("./EmpRouter/emprouter")
 const dotenv=require("dotenv");
 dotenv.config();
-server.get('/',(req,res)=>{
-    res.json({message:"Hello from server side2! "})
-})
+server.use('/images', express.static(path.join(__dirname,'ImgUpload', 'Public', 'images')));
+
 server.use(express.json());
 server.listen(process.env.PORT,()=>{
     console.log(`server is running ${process.env.PORT}`);
@@ -18,4 +19,7 @@ server.listen(process.env.PORT,()=>{
     console.log(err);
 })
 })
+// server.use('/uploads', express.static('uploads'));
+
  server.use(router);
+ server.use(Emprouter);
