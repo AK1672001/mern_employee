@@ -4,15 +4,15 @@ const jwt=require("jsonwebtoken");
 const dotenv=require("dotenv");
 dotenv.config();
 const Signup=async(req,res)=>{
-    const{username,email,password}=req.body;
+    const{name,email,password}=req.body;
     try{
-        if(!username || !email || !password )
+        if(!name || !email || !password )
             return res.status(400).json({msg:"please fill details"})
         const data= await Userdata.findOne({email});
-        if(data) return res.status(200).json({msg:"email already exist"});
+        if(data) return res.status(400).json({msg:"email already exist"});
         const haspassword= await bcrypt.hash(password,10)
           const user=  new Userdata({
-            username,
+            name,
             email,
             password:haspassword
           })
@@ -21,7 +21,7 @@ const Signup=async(req,res)=>{
           return res.status(200).json({msg:"successfully registration page",user})
     }
     catch(err){
-       return  res.status(500).json({msg:err})
+       return  res.status(500).json({msg:err.message})
     }
 }
 
@@ -35,16 +35,18 @@ const Sigin=async(req,res)=>{
        if(!validpassword)return res.status(404).json({msg:"please correct this password"});
        const token=jwt.sign(
         {
+        // name:user.name,
          userId:user._id,
+         name:user.name
         },
          process.env.JWT_SECRET,
          {expiresIn:"2d"}
 
        )
-       return res.status(200).json({msg:"successfully sigin",user:user.email,token});
+       return res.status(200).json({msg:"successfully sigin",email:user.email,user:user.name,token});
   }
   catch(err){
-    return res.status(500).json({msg:err})
+    return res.status(500).json({msg:err.message})
   }
 }
 module.exports={Signup,Sigin};

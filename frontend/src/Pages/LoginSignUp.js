@@ -1,19 +1,71 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
+const data={
+    name:"",
+    email:"",
+    password:""
+}
 const LoginSignUp = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSignup, setIsSignup] = useState(true);
-  const[user,setUser]=useState("");
-  const handleFormSubmit = (e) => {
+  const[user,setUser]=useState(data);
+  const[error,setError]=useState(null);
+  const[success,setSuccess]=useState(null);
+  const navigate=useNavigate('');
+  const handleInputChange = (e) => {
     e.preventDefault();
-    setUser({
+   
+      setUser({
         ...user,
         [e.target.name]:e.target.value
-    })
-    // Add your login/signup logic here
-    setIsLoggedIn(true);
+      });
+    
   };
+  const handleFormSubmit = async(e) => {
+    e.preventDefault();
+    console.log("isSignup<>>>",isSignup)
+   try{
+    if(!isSignup){
+        const { email, password } = user;
+        const response= await axios.post("http://localhost:5000/sigin",{
+            email,password
+        });
+        console.log("dataa is>>",response.data);
+        const token = response.data.token;
+        localStorage.setItem('token',response.data.token);
+        
+        
+        setIsLoggedIn(true);
+        navigate("/")
+    }
+    else{
+        // console.log("user data",user)
+        const response= await axios.post("http://localhost:5000/signup",user);
+        console.log(response.data);
+        setSuccess(response.data.msg);
+        setTimeout(()=>{
+            setSuccess();
+        },2000)
+       setTimeout(()=>{
+        setIsSignup(false)
+       },2000)
+        // setIsLoggedIn(true);
+    }
+   }
+   catch(err){
+      console.log(err);
+      setError(err.response?.data?.msg );
+         setTimeout(()=>{
+           setError()
+        },2000)
+   }
+    
+    
+  };
+  
 
   const toggleForm = () => {
     setIsSignup(!isSignup);
@@ -28,6 +80,7 @@ const LoginSignUp = () => {
         </h2>
 
         {/* Form */}
+        {success && <p className="text-green-500">{success}</p>}
         <form onSubmit={handleFormSubmit} className="space-y-6">
           {isSignup && (
             <div className="relative">
@@ -36,6 +89,7 @@ const LoginSignUp = () => {
               </span>
               <input
                 type="name"
+                onChange={(e)=>handleInputChange(e)}
                 placeholder="Full Name"
                 name="name"
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300 ease-in-out"
@@ -44,12 +98,15 @@ const LoginSignUp = () => {
             </div>
           )}
 
-          <div className="relative">
+          <div className="relative">            
             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
               <FaEnvelope className="text-gray-400" />
             </span>
+            {error && <p className="text-red-500">{error}</p>}
+
             <input
               type="email"
+              onChange={(e)=>handleInputChange(e)}
               placeholder="Email Address"
               name="email"
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300 ease-in-out"
@@ -62,6 +119,7 @@ const LoginSignUp = () => {
               <FaLock className="text-gray-400" />
             </span>
             <input
+             onChange={(e)=>handleInputChange(e)}
               type="password"
               placeholder="Password"
               name="password"

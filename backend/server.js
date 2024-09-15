@@ -4,8 +4,15 @@ const path = require('path');
 const mongoose=require("mongoose")
  const router=require("./Router/router")
  const Emprouter=require("./EmpRouter/emprouter")
+ const cors=require("cors")
+
 const dotenv=require("dotenv");
 dotenv.config();
+server.use(cors({
+    origin: 'http://localhost:3000', // Specify the allowed origin
+    credentials: true
+     
+ }));
 server.use('/images', express.static(path.join(__dirname,'ImgUpload', 'Public', 'images')));
 
 server.use(express.json());
@@ -23,3 +30,4 @@ server.listen(process.env.PORT,()=>{
 
  server.use(router);
  server.use(Emprouter);
+
