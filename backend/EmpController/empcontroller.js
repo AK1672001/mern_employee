@@ -1,10 +1,13 @@
 const Empdata=require("../EmpModel/empmodel");
 const Empdetails=async(req,res)=>{
     const{name,email,phone,designation,gender,course}=req.body;
-    const ImgUpload = req.file.filename; 
+    var ImgUpload='';
+    if(req.file){
+      ImgUpload = req.file.filename; 
+    }
 
     if(!name ||!email || !phone || !designation || !gender || !course || !ImgUpload)
-        return res.status(404).json({msg:"please fill all the details including image"})
+        return res.status(404).json({msg:"please fill all the details including profile image"})
     try{
          const userdata= await Empdata.findOne({email})
          if(userdata)return res.status(404).json({msg:"please provide anthor email"})
@@ -18,7 +21,7 @@ const Empdetails=async(req,res)=>{
             ImgUpload
           })
           await user.save();
-          return res.status(200).json({msg:"successfully employ details",user});
+          return res.status(200).json({msg:"Employee created successfully!",user});
     }
     catch(err){
         return res.status(500).json({msg:err})

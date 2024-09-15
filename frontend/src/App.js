@@ -4,6 +4,9 @@ import HomePage from './Pages/Home';
 import axios from 'axios'
 import LoginSignUp from './Pages/LoginSignUp';
 import Navbar from './Component/Navbar';
+import Dashboard from './Component/Dasboard';
+import EmployeeForm from './Component/EmployeeCreate';
+import EmployeeList from './Component/EmployeeAllDetails.js';
 axios.defaults.baseURL = 'http://localhost:5000';
 axios.defaults.withCredentials = true;
 // axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -14,6 +17,10 @@ function App() {
       <Routes>
         <Route path='/login' element={<LoginSignUp/>}/>
         <Route path='/' element={<HomePage/>}/>
+        <Route path='/dash' element={<Dashboard/>}/>
+        <Route path='/createemployee' element={<EmployeeForm/>}/>
+        <Route path='/allemployee' element={<EmployeeList/>}/>
+
       </Routes>
     
       

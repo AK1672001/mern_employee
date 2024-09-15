@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { LiaAccusoft } from "react-icons/lia";
+import {jwtDecode} from "jwt-decode";
+import { useMediaQuery } from 'react-responsive';
 
 const Navbar = () => {
   const [username, setUserName] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -19,13 +20,18 @@ const Navbar = () => {
     } else {
       console.log("No token found");
     }
-  }, []);
+  }, [token]);
+
+  const handleMenuToggle = () => setIsMenuOpen(!isMenuOpen);
+
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   return (
-    <>
-      <header className="bg-blue-600 text-white p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <Link to={"/"} className="flex flex-row">
+    <header className="bg-blue-600 text-white p-4">
+      <div className="container mx-auto flex flex-col md:flex-row items-center">
+        {/* Logo and Title */}
+        <div className="flex items-center justify-between w-full md:w-auto">
+          <Link to="/" className="flex items-center space-x-2">
             <svg
               className="w-8 h-8 text-white"
               xmlns="http://www.w3.org/2000/svg"
@@ -37,51 +43,78 @@ const Navbar = () => {
             </svg>
             <span className="text-2xl font-semibold text-white">TaskTide</span>
           </Link>
-          <nav className="items-center justify-center">
-            <ul className="flex space-x-4 items-center ">
-              <li>
-                <a href="#dashboard" className="hover:text-gray-200">
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a href="#employees" className="hover:text-gray-200">
-                  Employees List
-                </a>
-              </li>
-              {username ? (
-                <>
-                  <li className="justify-center font-bold hover:text-gray-200 flex flex-row gap-1 items-center" >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-3.31 0-6 2.69-6 6v1h12v-1c0-3.31-2.69-6-6-6z"
-                        fill="white"
-                      />
-                    </svg>
-                    <span className="text-white">{username}</span>
-                  </li>
+          {isMobile && (
+            <button
+              className="md:hidden flex items-center px-2 py-1 text-white"
+              onClick={handleMenuToggle}
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
+
+        {/* Navigation Menu */}
+        <nav className={`w-full md:flex md:items-center md:space-x-4 ${isMobile && !isMenuOpen ? "hidden" : "flex"}`}>
+          <ul className="flex flex-col md:flex-row items-center w-full gap-4">
+            {/* Push the navigation items to the right */}
+            <div className="flex-grow"></div>
+            <li>
+              <Link to="/dash" className="hover:text-gray-200">
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <a href="#employees" className="hover:text-gray-200">
+                Employees List
+              </a>
+            </li>
+            {username ? (
+              <>
+                <li className="flex items-center space-x-2 font-bold hover:text-gray-200">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-3.31 0-6 2.69-6 6v1h12v-1c0-3.31-2.69-6-6-6z"
+                      fill="white"
+                    />
+                  </svg>
+                  <span>{username}</span>
+                </li>
+                <li>
                   <button className="bg-yellow-500 text-blue-800 py-2 px-6 rounded-lg font-semibold hover:bg-yellow-400 transition duration-300">
                     Logout
                   </button>
-                </>
-              ) : (
-                <li>
-                  <a href="/login" className="hover:text-gray-200">
-                    Login
-                  </a>
                 </li>
-              )}
-            </ul>
-          </nav>
-        </div>
-      </header>
-    </>
+              </>
+            ) : (
+              <li>
+                <a href="/login" className="hover:text-gray-200">
+                  Login
+                </a>
+              </li>
+            )}
+          </ul>
+        </nav>
+      </div>
+    </header>
   );
 };
 
