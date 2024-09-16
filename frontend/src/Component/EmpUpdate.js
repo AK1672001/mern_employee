@@ -20,7 +20,7 @@ const EmpUpdate = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get(`/https://mern-employee-7.onrender.com/empget/${id}`);
+        const response = await axios.get(`https://mern-employee-7.onrender.com/empget/${id}`);
         const { name, gender, email, phone, designation, course } = response.data.employeedata;
         setFormData({
           name,
@@ -67,7 +67,7 @@ const EmpUpdate = () => {
     }
 
     try {
-      const response = await axios.post(`/empupdatedetails/${id}`, data, {
+      const response = await axios.post(`https://mern-employee-7.onrender.com/empupdatedetails/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
