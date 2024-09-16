@@ -26,8 +26,15 @@ server.listen(process.env.PORT,()=>{
     console.log(err);
 })
 })
-// server.use('/uploads', express.static('uploads'));
+server.use(router);
+server.use(Emprouter);
 
- server.use(router);
- server.use(Emprouter);
+
+const dirname=path.resolve();
+server.use(express.static(path.join(dirname,'/frontend/dest')));
+server.get("*",(req,res)=>{
+    res.sendFile(path.join(dirname,"frontend",'dist','index.html'))
+})
+
+
 
