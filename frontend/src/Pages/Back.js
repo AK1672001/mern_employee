@@ -1,23 +1,32 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 const Back = () => {
-    const navigate=useNavigate('');
-    const buttonclick=()=>{
-       navigate('/login')
-    }
+  const navigate = useNavigate();
+  
+  const buttonClick = () => {
+    navigate('/login');
+  };
+
   return (
     <>
-        <div className='text-black justify-center mt-28 flex  font-bold text-6xl'>
-            welcome !
-            <h1>please login here...</h1>
-        </div>
-        <div className='justify-center flex mt-8'>
-        <button onClick={buttonclick} className='bg-yellow-400 font-bold text-2xl py-2 px-8 rounded-lg text-blue-600 hover:bg-yellow-500 transition duration-150'>login</button>
+      {/* Main Welcome Text */}
+      <div className="text-black justify-center mt-10 sm:mt-16 md:mt-28 flex flex-col items-center font-bold text-2xl sm:text-4xl md:text-6xl">
+        <h1>Welcome!</h1>
+        <h2 className="text-lg sm:text-2xl md:text-4xl mt-4">Please login here...</h2>
+      </div>
 
-        </div>
-
+      {/* Login Button */}
+      <div className="justify-center flex mt-8">
+        <button
+          onClick={buttonClick}
+          className="bg-yellow-400 font-bold text-lg sm:text-xl md:text-2xl py-2 px-6 sm:px-8 md:px-10 rounded-lg text-blue-600 hover:bg-yellow-500 transition duration-150"
+        >
+          Login
+        </button>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Back
+export default Back;
