@@ -48,7 +48,7 @@ const EmployeeForm = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/empdetails', data, {
+      const response = await axios.post('/empdetails', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
