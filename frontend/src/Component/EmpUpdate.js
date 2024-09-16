@@ -20,7 +20,7 @@ const EmpUpdate = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get(`/empget/${id}`);
+        const response = await axios.get(`/https://mern-employee-7.onrender.com/empget/${id}`);
         const { name, gender, email, phone, designation, course } = response.data.employeedata;
         setFormData({
           name,
