@@ -11,6 +11,9 @@ const Navbar = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const[success,setSuccess]=useState(null);
   useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
     if (token) {
       try {
         const decodedPayload = jwtDecode(token);
@@ -26,7 +29,7 @@ const Navbar = () => {
         setToken(null);
       }
     }
-  }, [token]);
+  }, []);
 
   const handleLogout = async () => {
     try {
