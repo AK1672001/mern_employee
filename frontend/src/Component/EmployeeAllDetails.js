@@ -11,7 +11,7 @@ const EmployeeList = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/empalldetails");
+        const response = await axios.get("/empalldetails");
         setEmployees(response.data.user);
       } catch (error) {
         console.error('Error fetching employee details:', error);
@@ -28,7 +28,7 @@ const EmployeeList = () => {
 
   const handleDelete = async (id) => {
    try {
-    const response=await axios.post(`http://localhost:5000/empdelete/${id}`)
+    const response=await axios.post(`/empdelete/${id}`)
     if (response.status >= 200 && response.status < 300) {
       setEmployees((prevEmployees) => prevEmployees.filter(employee => employee.id !== id));
       setSuccess("User deleted successfully!");
