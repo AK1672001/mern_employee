@@ -10,13 +10,13 @@ const Back = () => {
 
   return (
     <>
-      {/* Main Welcome Text */}
+     
       <div className="text-black justify-center mt-10 sm:mt-16 md:mt-28 flex flex-col items-center font-bold text-2xl sm:text-4xl md:text-6xl">
         <h1>Welcome!</h1>
         <h2 className="text-lg sm:text-2xl md:text-4xl mt-4">Please login here...</h2>
       </div>
 
-      {/* Login Button */}
+     
       <div className="justify-center flex mt-8">
         <button
           onClick={buttonClick}
