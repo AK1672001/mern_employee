@@ -20,7 +20,7 @@ const EmpUpdate = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/empget/${id}`);
+        const response = await axios.get(`/empget/${id}`);
         const { name, gender, email, phone, designation, course } = response.data.employeedata;
         setFormData({
           name,
@@ -67,7 +67,7 @@ const EmpUpdate = () => {
     }
 
     try {
-      const response = await axios.post(`http://localhost:5000/empupdatedetails/${id}`, data, {
+      const response = await axios.post(`/empupdatedetails/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
