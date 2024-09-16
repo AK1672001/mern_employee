@@ -31,9 +31,9 @@ server.use(Emprouter);
 
 
 const dirname=path.resolve();
-server.use(express.static(path.join(dirname,'/frontend/dist')));
+server.use(express.static(path.join(dirname,'/frontend/build')));
 server.get("*",(req,res)=>{
-    res.sendFile(path.join(dirname,"frontend",'dist','index.html'))
+    res.sendFile(path.join(dirname,"frontend",'build','index.html'))
 })
 
 
