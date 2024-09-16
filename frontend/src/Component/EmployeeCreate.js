@@ -48,7 +48,7 @@ const EmployeeForm = () => {
     }
 
     try {
-      const response = await axios.post('/empdetails', data, {
+      const response = await axios.post('https://mern-employee-7.onrender.com/empdetails', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
