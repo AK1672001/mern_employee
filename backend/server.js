@@ -9,10 +9,26 @@ const mongoose=require("mongoose")
 const dotenv=require("dotenv");
 dotenv.config();
 server.use(cors({
-    origin: 'http://localhost:3000', // Specify the allowed origin
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'https://mern-employee-3.onrender.com'
+            // Add other allowed origins here
+        ];
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
+}));
+
+// server.use(cors({
+//     origin: 'https://mern-employee-3.onrender.com', // Specify the allowed origin
+//     credentials: true
      
- }));
+//  }));
 server.use('/images', express.static(path.join(__dirname,'ImgUpload', 'Public', 'images')));
 
 server.use(express.json());
