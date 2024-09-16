@@ -11,7 +11,7 @@ dotenv.config();
 
 
 server.use(cors({
-    origin: 'http://localhost:3000', 
+   origin: ['http://localhost:3000', 'https://mern-employee-7.onrender.com'],
     credentials: true
      
  }));
