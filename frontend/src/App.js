@@ -7,6 +7,8 @@ import Navbar from './Component/Navbar';
 import Dashboard from './Component/Dasboard';
 import EmployeeForm from './Component/EmployeeCreate';
 import EmployeeList from './Component/EmployeeAllDetails.js';
+import EmpUpdate from './Component/EmpUpdate.js';
+import Back from './Pages/Back.js';
 axios.defaults.baseURL = 'http://localhost:5000';
 axios.defaults.withCredentials = true;
 // axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -20,6 +22,10 @@ function App() {
         <Route path='/dash' element={<Dashboard/>}/>
         <Route path='/createemployee' element={<EmployeeForm/>}/>
         <Route path='/allemployee' element={<EmployeeList/>}/>
+        <Route path='/empupdate/:id' element={<EmpUpdate/>}/>
+
+        <Route path='/back' element={<Back/>}/>
+
 
       </Routes>
     

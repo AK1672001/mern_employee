@@ -1,29 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 import { useMediaQuery } from 'react-responsive';
+import axios from 'axios';
 
 const Navbar = () => {
-  const [username, setUserName] = useState("");
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const token = localStorage.getItem("token");
-
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const[success,setSuccess]=useState(null);
   useEffect(() => {
     if (token) {
-      const decodedPayload = jwtDecode(token);
-      const userName = decodedPayload.name;
-      if (userName) {
-        setUserName(userName);
-      } else {
-        console.log("Name not found in token");
+      try {
+        const decodedPayload = jwtDecode(token);
+        const userName = decodedPayload.name;
+        if (userName) {
+          setUsername(userName);
+        } else {
+          console.log("Name not found in token");
+        }
+      } catch (error) {
+        console.error("Invalid token:", error);
+        localStorage.removeItem("token");
+        setToken(null);
       }
-    } else {
-      console.log("No token found");
     }
   }, [token]);
 
-  const handleMenuToggle = () => setIsMenuOpen(!isMenuOpen);
+  const handleLogout = async () => {
+    try {
+     const response= await axios.get('/logout', {}, { withCredentials: true });
+      localStorage.removeItem('token');
+      setToken(null);
+      setUsername("");
+      setSuccess(response.data.msg);
+      setTimeout(()=>{
+          setSuccess();
+      },3000)
+      navigate('/signin');
+      setTimeout(()=>{
+        navigate('/back')
+      },4000)
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
+  const handleMenuToggle = () => setIsMenuOpen(!isMenuOpen);
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   return (
@@ -47,6 +71,7 @@ const Navbar = () => {
             <button
               className="md:hidden flex items-center px-2 py-1 text-white"
               onClick={handleMenuToggle}
+              aria-label="Toggle Menu"
             >
               <svg
                 className="w-6 h-6"
@@ -71,16 +96,23 @@ const Navbar = () => {
           <ul className="flex flex-col md:flex-row items-center w-full gap-4">
             {/* Push the navigation items to the right */}
             <div className="flex-grow"></div>
-            <li>
+            {username ?(
+              <>
+                  <li>
               <Link to="/dash" className="hover:text-gray-200">
                 Dashboard
               </Link>
             </li>
             <li>
-              <a href="#employees" className="hover:text-gray-200">
+              <Link to="/allemployee" className="hover:text-gray-200">
                 Employees List
-              </a>
+              </Link>
             </li>
+              </>
+            ):(
+              ""
+            )}
+           
             {username ? (
               <>
                 <li className="flex items-center space-x-2 font-bold hover:text-gray-200">
@@ -99,21 +131,26 @@ const Navbar = () => {
                   <span>{username}</span>
                 </li>
                 <li>
-                  <button className="bg-yellow-500 text-blue-800 py-2 px-6 rounded-lg font-semibold hover:bg-yellow-400 transition duration-300">
+                  <button
+                    onClick={handleLogout}
+                    className="bg-yellow-500 text-blue-800 py-2 px-6 rounded-lg font-semibold hover:bg-yellow-400 transition duration-300"
+                  >
                     Logout
                   </button>
                 </li>
               </>
             ) : (
               <li>
-                <a href="/login" className="hover:text-gray-200">
+                <Link to="/login" className="hover:text-gray-200">
                   Login
-                </a>
+                </Link>
               </li>
             )}
           </ul>
         </nav>
       </div>
+      {success && <p className="text-white mt-14 justify-center font-bold text-3xl items-center ml-96">{success}</p>}
+
     </header>
   );
 };

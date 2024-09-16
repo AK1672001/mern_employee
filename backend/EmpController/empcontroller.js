@@ -73,4 +73,17 @@ const Empdetailsupdate=async(req,res)=>{
       return  res.status(500).json({msg:err.message})
     }
 }
-module.exports={Empdetails,Empalldetails,Empdelete,Empdetailsupdate};
+const singleEmpdetails=async(req,res)=>{
+  const {id}=req.params;
+  try{
+      const employeedata=await Empdata.findById(id);
+       if(!employeedata){
+          return res.status(404).json({msg:"employe not found"});
+       }
+       return res.status(200).json({employeedata});
+  }
+  catch(err){
+    return  res.status(500).json({msg:err.message})
+  }
+}
+module.exports={Empdetails,Empalldetails,Empdelete,Empdetailsupdate,singleEmpdetails};

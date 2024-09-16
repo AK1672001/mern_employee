@@ -1,42 +1,51 @@
+
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const EmployeeList = () => {
   // Initialize as an empty array
   const [employees, setEmployees] = useState([]);
-
+  const[success,setSuccess]=useState(null)
+  const navigate=useNavigate();
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        // Fetch data from the API
         const response = await axios.get("http://localhost:5000/empalldetails");
-        console.log("response.data>>", response.data.user);
-        // Set the state with the response data
         setEmployees(response.data.user);
       } catch (error) {
-        // Handle errors
         console.error('Error fetching employee details:', error);
       }
     };
-
-    // Call the async function to fetch data
     fetchEmployees();
-  }, []);
+  }, [success]);
 
   const handleEdit = (id) => {
     console.log(`Edit employee with ID: ${id}`);
-    // Implement edit functionality here
+    navigate(`/empupdate/${id}`)
+    
   };
 
-  const handleDelete = (id) => {
-    console.log(`Delete employee with ID: ${id}`);
-    // Implement delete functionality here
+  const handleDelete = async (id) => {
+   try {
+    const response=await axios.post(`http://localhost:5000/empdelete/${id}`)
+    if (response.status >= 200 && response.status < 300) {
+      setEmployees((prevEmployees) => prevEmployees.filter(employee => employee.id !== id));
+      setSuccess("User deleted successfully!");
+      setTimeout(() => {
+        setSuccess(null);
+      }, 2000);
+    }
+   } catch (error) {
+    
+   }
   };
 
   return (
     <div className="bg-gray-50 min-h-screen p-4">
       <div className="container mx-auto bg-white rounded-lg shadow-md p-6">
         <h2 className="text-3xl font-semibold mb-6 text-gray-800">Employee List</h2>
+        {success && <p className="text-green-500">{success}</p>}
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200 rounded-lg">
             <thead>
@@ -65,13 +74,13 @@ const EmployeeList = () => {
                   <td className="py-4 px-6 text-gray-700">{employee.designation}</td>
                   <td className="py-4 px-6 flex space-x-2">
                     <button
-                      onClick={() => handleEdit(employee.id)}
+                      onClick={() => handleEdit(employee._id)}
                       className="px-3 py-1 bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(employee.id)}
+                      onClick={() => handleDelete(employee._id)}
                       className="px-3 py-1 bg-red-500 text-white rounded-md shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
                     >
                       Delete

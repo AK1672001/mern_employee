@@ -49,4 +49,13 @@ const Sigin=async(req,res)=>{
     return res.status(500).json({msg:err.message})
   }
 }
-module.exports={Signup,Sigin};
+const logout=async(req,res)=>{
+  try{
+    res.clearCookie("userId","name");
+    res.status(200).json({msg:"user logout successfully"});
+  }
+  catch(err){
+    return res.status(404).json({mes:err.message})
+  }
+}
+module.exports={Signup,Sigin,logout};

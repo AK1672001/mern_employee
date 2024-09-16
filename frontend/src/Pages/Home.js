@@ -17,7 +17,7 @@ const HomePage = () => {
       {/* Main Content */}
       <main className="flex-grow container mx-auto p-4">
         <section className="bg-white shadow-md rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Welcome, [User's Name]</h2>
+          <h2 className="text-xl font-semibold mb-4">Welcome</h2>
           <p className="text-gray-600 mb-4">
             Here you can manage employee records, generate reports, and more.
           </p>
