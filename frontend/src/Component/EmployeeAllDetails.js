@@ -64,7 +64,7 @@ const EmployeeList = () => {
               {employees.map(employee => (
                 <tr key={employee.id} className="border-b border-gray-200">
                   <td className="py-4 px-6">
-                    <img src={`http://localhost:5000/images/${employee.ImgUpload}`}  alt={employee.name} className="w-12 h-12 rounded-full object-cover" />
+                    <img src={`https://mern-employee-7.onrender.com/images/${employee.ImgUpload}`}  alt={employee.name} className="w-12 h-12 rounded-full object-cover" />
                   </td>
                   <td className="py-4 px-6 text-gray-700">{employee.name}</td>
                   <td className="py-4 px-6 text-gray-700">{employee.phone}</td>
