@@ -68,12 +68,13 @@ const EmployeeForm = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8">
-      <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-4 sm:p-6 lg:p-8">
+      <div className="w-full max-w-xl lg:max-w-3xl bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
         <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-gray-800">Create New Employee</h2>
         {success && <p className="text-green-500">{success}</p>}
         {error && <p className="text-red-500">{error}</p>}
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {/* Form Fields */}
             <div>
               <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Name</label>
               <input
@@ -189,4 +190,3 @@ const EmployeeForm = () => {
 };
 
 export default EmployeeForm;
-
