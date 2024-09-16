@@ -1,12 +1,11 @@
-// src/EmployeeForm.js
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const EmployeeForm = () => {
   const navigate = useNavigate();
-  const[error,setError]=useState(null);
-  const[success,setSuccess]=useState(null);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -16,6 +15,7 @@ const EmployeeForm = () => {
     designation: '',
   });
   const [selectedImage, setSelectedImage] = useState(null);
+
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setSelectedImage(e.target.files[0]);
@@ -24,15 +24,14 @@ const EmployeeForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const data = new FormData();
 
     // Append all form fields
@@ -54,26 +53,23 @@ const EmployeeForm = () => {
         },
       });
 
-      console.log(response.data);
       setSuccess(response.data.msg);
-      setTimeout(()=>{
-          setSuccess('');
-      },1000)
       setTimeout(() => {
+        setSuccess('');
         navigate('/allemployee');
-      }, 2000); 
+      }, 2000);
     } catch (error) {
-      setError(error.response?.data?.msg );
-         setTimeout(()=>{
-           setError('')
-        },2000)
+      setError(error.response?.data?.msg);
+      setTimeout(() => {
+        setError('');
+      }, 2000);
     }
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-semibold mb-6 text-gray-800">Create New Employee</h2>
+    <div className="bg-gray-50 min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8">
+      <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-4 sm:p-6 lg:p-8">
+        <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-gray-800">Create New Employee</h2>
         {success && <p className="text-green-500">{success}</p>}
         {error && <p className="text-red-500">{error}</p>}
         <form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -193,3 +189,4 @@ const EmployeeForm = () => {
 };
 
 export default EmployeeForm;
+
