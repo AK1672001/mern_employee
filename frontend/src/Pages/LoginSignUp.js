@@ -30,7 +30,7 @@ const LoginSignUp = () => {
    try{
     if(!isSignup){
         const { email, password } = user;
-        const response= await axios.post("http://localhost:5000/sigin",{
+        const response= await axios.post("https://mern-employee-7.onrender.com/sigin",{
             email,password
         });
         console.log("dataa is>>",response.data);
@@ -43,7 +43,7 @@ const LoginSignUp = () => {
     }
     else{
         // console.log("user data",user)
-        const response= await axios.post("http://localhost:5000/signup",user);
+        const response= await axios.post("https://mern-employee-7.onrender.com/signup",user);
         console.log(response.data);
         setSuccess(response.data.msg);
         setTimeout(()=>{
