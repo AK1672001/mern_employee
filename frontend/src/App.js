@@ -9,7 +9,9 @@ import EmployeeForm from './Component/EmployeeCreate';
 import EmployeeList from './Component/EmployeeAllDetails.js';
 import EmpUpdate from './Component/EmpUpdate.js';
 import Back from './Pages/Back.js';
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = window.location.origin === 'http://localhost:3000' 
+    ? 'http://localhost:5000' 
+    : 'https://mern-employee-7.onrender.com';
 axios.defaults.withCredentials = true;
 // axios.defaults.headers.common['Content-Type'] = 'application/json';
 function App() {
