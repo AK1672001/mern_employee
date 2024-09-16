@@ -20,13 +20,14 @@ server.use('/images', express.static(path.join(__dirname,'ImgUpload', 'Public', 
 server.use(express.json());
 server.listen(process.env.PORT,()=>{
     console.log(`server is running ${process.env.PORT}`);
-    mongoose.connect(`${process.env.MONGO}`)
+ 
+})
+mongoose.connect(`${process.env.MONGO}`)
 .then(()=>{
    console.log("database is connected");
 })
 .catch((err)=>{
     console.log(err);
-})
 })
 server.use(router);
 server.use(Emprouter);
