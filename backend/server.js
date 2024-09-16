@@ -18,7 +18,7 @@ server.use('/images', express.static(path.join(__dirname,'ImgUpload', 'Public', 
 server.use(express.json());
 server.listen(process.env.PORT,()=>{
     console.log(`server is running ${process.env.PORT}`);
-    mongoose.connect("mongodb://localhost:27017/userdata")
+    mongoose.connect(`${process.env.MONGO}`)
 .then(()=>{
    console.log("database is connected");
 })
