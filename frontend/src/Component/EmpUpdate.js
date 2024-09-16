@@ -1,13 +1,12 @@
 import axios from 'axios';
-import React, { useState,useEffect } from 'react';
-import { useNavigate,useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const EmpUpdate = () => {
   const navigate = useNavigate();
-  const[error,setError]=useState(null);
-  const[success,setSuccess]=useState(null);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const { id } = useParams();
-  const [employee,setEmployees]=useState([])
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -17,19 +16,19 @@ const EmpUpdate = () => {
     designation: '',
   });
   const [selectedImage, setSelectedImage] = useState(null);
+
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/empget/${id}`);
-        console.log("response.data.employeedata>>",response.data.employeedata)
-        const {name,gender,email,phone,designation,course}=response.data.employeedata;
+        const { name, gender, email, phone, designation, course } = response.data.employeedata;
         setFormData({
-          name: name,
-          phone: phone,
-          gender: gender,
-          course:course,
-          email:email,
-          designation:designation,
+          name,
+          phone,
+          gender,
+          course,
+          email,
+          designation,
         });
       } catch (error) {
         console.error('Error fetching employee details:', error);
@@ -37,6 +36,7 @@ const EmpUpdate = () => {
     };
     fetchEmployees();
   }, [id]);
+
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setSelectedImage(e.target.files[0]);
@@ -73,30 +73,23 @@ const EmpUpdate = () => {
         },
       });
 
-      console.log(response.data);
       setSuccess(response.data.msg);
-      setTimeout(()=>{
-          setSuccess('');
-      },1000)
-      setTimeout(() => {
-        navigate('/allemployee');
-      }, 2000); 
+      setTimeout(() => setSuccess(''), 2000);
+      setTimeout(() => navigate('/allemployee'), 2000);
     } catch (error) {
-      setError(error.response?.data?.msg );
-         setTimeout(()=>{
-           setError('')
-        },2000)
+      setError(error.response?.data?.msg);
+      setTimeout(() => setError(''), 2000);
     }
   };
 
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-semibold mb-6 text-gray-800">Update Employee Details</h2>
-        {success && <p className="text-green-500">{success}</p>}
-        {error && <p className="text-red-500">{error}</p>}
+      <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-6 sm:p-8">
+        <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-gray-800">Update Employee Details</h2>
+        {success && <p className="text-green-500 mb-4">{success}</p>}
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit} encType="multipart/form-data">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6">
             <div>
               <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Name</label>
               <input
@@ -107,7 +100,6 @@ const EmpUpdate = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="John Doe"
-                // required
               />
             </div>
 
@@ -121,7 +113,6 @@ const EmpUpdate = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="1234567890"
-                // required
               />
             </div>
 
@@ -133,7 +124,6 @@ const EmpUpdate = () => {
                 value={formData.gender || ''}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                // required
               >
                 <option value="" disabled>Select Gender</option>
                 <option value="male">Male</option>
@@ -152,7 +142,6 @@ const EmpUpdate = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Computer Science/BCA/MCA"
-                // required
               />
             </div>
 
@@ -166,7 +155,6 @@ const EmpUpdate = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="johndoe@example.com"
-                // required
               />
             </div>
 
@@ -180,11 +168,10 @@ const EmpUpdate = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Software Engineer"
-                // required
               />
             </div>
 
-            <div className="col-span-2">
+            <div>
               <label htmlFor="image" className="block text-gray-700 font-medium mb-2">Profile Image</label>
               <input
                 type="file"
@@ -202,7 +189,7 @@ const EmpUpdate = () => {
               type="submit"
               className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              update
+              Update
             </button>
           </div>
         </form>
